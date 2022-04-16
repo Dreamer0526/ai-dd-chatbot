@@ -14,7 +14,7 @@ def index(request):
 
         auth_list = [phrase, timestamp, nonce]
         auth_list.sort()
-        hash_result = hashlib.sha1("".join(auth_list)).hexdigest()
+        hash_result = hashlib.sha1("".join(auth_list)).encode("utf-8").hexdigest()
 
         if hash_result == echostr:
             return HttpResponse(echostr)
