@@ -42,16 +42,22 @@ def gen_response(to_user_open_id, from_user_open_id, content):
     return xml_template.format(**response_dict)
 
 
+def parse_msg_recv(request):
+    request_body = xmltodict.parse(request.body)
+    xml_dict = dict(request_body)["xml"]
+    user_input = dict(xml_dict)["Content"]
+    return user_input
+
+
 def index(request):
     if request.method == "GET":
         return check_signature(request)
 
     if request.method == "POST":
-        request_body = xmltodict.parse(request.body)
-        print(request_body)
+        user_input = parse_msg_recv(request)
         response = gen_response(
             to_user_open_id=request.GET["openid"],
             from_user_open_id="gh_74ccc0ad896d",
-            content="content",
+            content=user_input,
         )
         return HttpResponse(response, content_type="application/xml")
