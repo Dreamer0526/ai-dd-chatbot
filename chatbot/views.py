@@ -1,13 +1,25 @@
 import time
+import hashlib
+
 
 from django.http import HttpResponse
-from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
     if request.method == "GET":
+        phrase = "186548"
+        nonce = request.GET["nonce"]
         echostr = request.GET["echostr"]
-        return HttpResponse(echostr)
+        timestamp = request.GET["timestamp"]
+
+        auth_list = [phrase, timestamp, nonce]
+        auth_list.sort()
+        hash_result = hashlib.sha1("".join(auth_list)).hexdigest()
+
+        if hash_result == echostr:
+            return HttpResponse(echostr)
+        else:
+            return HttpResponse("error")
 
     if request.method == "POST":
         response_dict = dict()
