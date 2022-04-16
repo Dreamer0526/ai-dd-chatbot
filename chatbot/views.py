@@ -46,5 +46,9 @@ def index(request):
         return check_signature(request)
 
     if request.method == "POST":
-        response = gen_response(request.POST["openid"], "gh_74ccc0ad896d", "content")
+        response = gen_response(
+            to_user_open_id=request.GET["openid"],
+            from_user_open_id="gh_74ccc0ad896d",
+            content="content",
+        )
         return HttpResponse(response, content_type="application/xml")
