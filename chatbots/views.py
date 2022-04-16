@@ -5,10 +5,12 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
-    try:
+    if request.method == "GET":
         echostr = request.GET["echostr"]
         return HttpResponse(echostr)
-    except MultiValueDictKeyError:
+
+    if request.method == "POST":
+        print(request.POST)
         response_dict = dict()
         response_dict["ToUserName"] = request.POST["openid"]
         response_dict["FromUserName"] = "gh_74ccc0ad896d"
