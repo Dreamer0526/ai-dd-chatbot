@@ -1,5 +1,6 @@
 import time
 import hashlib
+import xmltodict
 
 from django.http import HttpResponse
 
@@ -46,6 +47,8 @@ def index(request):
         return check_signature(request)
 
     if request.method == "POST":
+        request_body = xmltodict.parse(request.body)
+        print(request_body)
         response = gen_response(
             to_user_open_id=request.GET["openid"],
             from_user_open_id="gh_74ccc0ad896d",
