@@ -10,7 +10,6 @@ def index(request):
         return HttpResponse(echostr)
 
     if request.method == "POST":
-        print(request.POST)
         response_dict = dict()
         response_dict["ToUserName"] = request.POST["openid"]
         response_dict["FromUserName"] = "gh_74ccc0ad896d"
