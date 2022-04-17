@@ -72,11 +72,11 @@ def index(request):
             num_return_sequences=5,
         )
         logger.info(
-            f"All answers prepared for user {user_open_id}: {','.join(output_list)}"
+            f"All answers prepared for user {user_open_id}: {'; '.join(output_list)}"
         )
 
         answer_idx = random.randint(0, len(output_list) - 1)
-        answer = output_list[answer_idx]
+        answer = "\n".join(output_list)
         logger.info(f"Answer selected for user {user_open_id}: {answer}")
 
         # return answer to user
