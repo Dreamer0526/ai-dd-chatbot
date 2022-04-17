@@ -49,15 +49,3 @@ def parse_msg_recv(request):
     return user_input
 
 
-def index(request):
-    if request.method == "GET":
-        return check_signature(request)
-
-    if request.method == "POST":
-        user_input = parse_msg_recv(request)
-        response = gen_response(
-            to_user_open_id=request.GET["openid"],
-            from_user_open_id="gh_74ccc0ad896d",
-            content=user_input,
-        )
-        return HttpResponse(response, content_type="application/xml")

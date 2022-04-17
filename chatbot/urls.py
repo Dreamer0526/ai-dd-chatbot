@@ -1,7 +1,7 @@
 from django.urls import path
 
-from . import views
+from . import dialogpt
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('dialogpt', dialogpt.index, name='index'),
 ]
