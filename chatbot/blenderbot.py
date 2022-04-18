@@ -9,10 +9,32 @@ socket_register = [
     {
         "id": x,
         "open_id": None,
-        "socket": create_connection("ws://localhost:8888/websocket")
+        "socket": create_connection("ws://localhost:8888/websocket"),
     }
     for x in range(50)
 ]
+
+
+def initiate_chat():
+    for socket_obj in socket_register:
+        ws = socket_obj["socket"]
+
+        invoke_message = json.dumps(
+            {"recipient": {"id": socket_obj["id"]}, "text": "invoke chat"}
+        )
+        ws.send(invoke_message)
+        result = ws.recv()
+
+        begin_message = json.dumps(
+            {"recipient": {"id": socket_obj["id"]}, "text": "begin"}
+        )
+        ws.send(begin_message)
+        result = ws.recv()
+
+        logger.info(f"Socket # {socket_obj['id']} ready to use")
+
+
+initiate_chat()
 
 
 def find_socket(user_open_id):
@@ -22,29 +44,6 @@ def find_socket(user_open_id):
 
     for socket_obj in socket_register:
         if socket_obj["open_id"] is None:
-            # initiate a new chat
-            ws = socket_obj["socket"]
-
-            invoke_message = json.dumps({
-                "recipient": {
-                    "id": user_open_id
-                },
-                "text": "invoke chat"
-            })
-            ws.send(invoke_message)
-            result = ws.recv()
-            logger.info(f"Message received to invoke chat for user {user_open_id}: {result}")
-
-            begin_message = json.dumps({
-                "recipient": {
-                    "id": user_open_id
-                },
-                "text": "begin"
-            })
-            ws.send(begin_message)
-            result = ws.recv()
-            logger.info(f"Message received to begin chat for user {user_open_id}: {result}")
-
             socket_obj["open_id"] = user_open_id
             return socket_obj
 
@@ -67,12 +66,7 @@ def index(request):
 
         # prepare answer
         ws = socket_dict["socket"]
-        message = json.dumps({
-            "recipient": {
-                "id": user_open_id
-            },
-            "text": msg_recv
-        })
+        message = json.dumps({"recipient": {"id": user_open_id}, "text": msg_recv})
         ws.send(message)
         ws_response = ws.recv()
         answer = json.loads(ws_response)["text"]
