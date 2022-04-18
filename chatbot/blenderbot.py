@@ -58,8 +58,7 @@ def index(request):
     if request.method == "POST":
         # parse user info and message received
         user_open_id = request.GET["openid"]
-        # msg_recv = wi.parse_msg_recv(request)
-        msg_recv = request.GET["input"]
+        msg_recv = wi.parse_msg_recv(request)
         logger.info(f"Message received from user {user_open_id}: {msg_recv}")
 
         # find docket
