@@ -1,7 +1,7 @@
 from django.urls import path
 
-from . import dialogpt
+from . import blenderbot
 
 urlpatterns = [
-    path('dialogpt', dialogpt.index, name='index'),
+    path('blenderbot', blenderbot.index, name='index'),
 ]
