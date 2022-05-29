@@ -75,7 +75,7 @@ def index(request):
         # return answer to user
         response = wi.gen_response(
             to_user_open_id=user_open_id,
-            from_user_open_id="gh_74ccc0ad896d",  # PMXbot003
+            from_user_open_id="gh_c9fbe359883f",  # PMXbot003
             content=answer,
         )
         return HttpResponse(response, content_type="application/xml")
